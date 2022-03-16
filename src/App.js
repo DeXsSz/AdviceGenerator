@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import React from 'react';
+import './styles/styles.scss'
 
 function App() {
+  const [advice, setAdvice] = React.useState({id: null, advice: null});
+  React.useEffect( async()=>{
+    const {data: {slip}} = await axios.get('https://api.adviceslip.com/advice');
+    setAdvice(slip)
+  },[]);
+  const handleClick = async()=>{
+    const {data: {slip}} = await axios.get('https://api.adviceslip.com/advice');
+    setAdvice(slip)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <div className="container app">
+      <div className='advice'>
+        <p className='advice__title'>
+          ADVICE #{advice.id}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <blockquote  className='quote'>
+          <span>"</span>{advice.advice}<span>"</span> 
+        </blockquote >
+
+        <div className='pattern-divider'></div>
+
+        <button className='btnRandom' onClick={handleClick}></button>
+      </div>
     </div>
   );
 }
